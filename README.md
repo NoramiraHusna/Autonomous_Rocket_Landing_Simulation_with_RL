@@ -11,16 +11,37 @@ We developed a **split-screen GUI** to demonstrate the direct side-by-side perfo
 
 ---
 
-## 📊 Key Findings
-The PPO reinforcement learning agent demonstrated superior robustness and adaptability compared to the classical PD controller across all tested wind disturbance levels.
+## ⚙️ Training Configuration
+The PPO agent was trained using the following parameters:
 
-| Metric | PD Controller (Baseline) | PPO AI Controller |
-| :--- | :--- | :--- |
-| **Avg. Reward** | Negative (~ -460 to -500) | Positive (~ 160 to 170) |
-| **Success Rate** | 0% | 80% - 90% |
-| **Crash Rate** | 100% | 10% |
+| Parameter | Value |
+| :--- | :--- |
+| **Simulation Environment** | `LunarLander-v3` |
+| **Algorithm** | Proximal Policy Optimization (PPO) |
+| **Policy** | `MlpPolicy` |
+| **Learning Rate** | 0.0003 |
+| **Training Duration** | 100,000 timesteps |
+| **Logging** | `./ppo_lunar_tensorboard/` |
+| **Saved Model** | `ppo_lunar_lander.zip` |
 
-> **Conclusion:** The machine learning controller effectively learned to compensate for lateral drift and vertical velocity, whereas the fixed-rule PD controller consistently failed to stabilize the lander under wind disturbances.
+---
+
+## 📊 Evaluation Results
+
+### Batch Performance Comparison
+The controllers were evaluated across three levels of wind disturbance (0, 8, and 12). 
+
+| Wind Power | Controller | Avg. Reward | Avg. Steps | Avg. Tracking Error | Success Rate | Crash Rate |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 0 | PD Controller | -500.01 | 78.1 | 0.980 | 0% | 100% |
+| 0 | PPO AI | 169.06 | 630.4 | 0.579 | 80% | 10% |
+| 8 | PD Controller | -496.48 | 67.8 | 0.949 | 0% | 100% |
+| 8 | PPO AI | 159.57 | 553.5 | 0.588 | 90% | 10% |
+| 12 | PD Controller | -468.97 | 61.5 | 0.953 | 0% | 100% |
+| 12 | PPO AI | 167.71 | 624.7 | 0.622 | 80% | 10% |
+
+### Result Interpretation
+The batch results show a clear performance difference. The PD controller produced negative average rewards and a 100% crash rate across all tested wind levels, as its fixed-rule logic could not compensate for environmental disturbances. In contrast, the PPO AI achieved consistently positive rewards and high success rates (80-90%), demonstrating superior adaptability, robustness, and lower tracking error.
 
 ---
 
